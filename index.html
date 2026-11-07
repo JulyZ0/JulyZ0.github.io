@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chiron · 多租户 AI Agent 平台</title>
+<meta name="description" content="Chiron 把对话、Agent、技能、知识库、插件与多层级记忆装进一套可自托管的平台：租户隔离到数据库上下文，配额与计费幂等，工具执行默认进受限沙箱。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e0f10'/%3E%3Cpath d='M22 10.5a8 8 0 1 0 0 11' fill='none' stroke='%23c8a86a' stroke-width='2.6' stroke-linecap='round'/%3E%3Ccircle cx='22.5' cy='16' r='2' fill='%23ecece6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./gh_athenavi_chiron/style.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="#top" aria-label="Chiron 首页">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M22 10.5a8 8 0 1 0 0 11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="22.5" cy="16" r="2" fill="currentColor"/>
+      </svg>
+      <span>Chiron</span>
+    </a>
+    <nav class="nav" aria-label="页面区块">
+      <a href="#platform">平台</a>
+      <a href="#delivery">交付形态</a>
+      <a href="#architecture">架构</a>
+      <a href="#demo">演示</a>
+      <a href="https://github.com/Athenavi/chiron" target="_blank" rel="noopener">源码</a>
+    </nav>
+    <div class="topbar__end">
+      <span class="pill">开源 · 可自托管</span>
+      <a class="btn btn--solid btn--sm" href="#demo">看运行过程</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero shell" id="top">
+    <div class="hero__copy">
+      <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>CHIRON — 多租户 AGENT 平台</p>
+      <h1 class="hero__title">把 Agent 能力，<br><em>交付</em>给<br>整个组织。</h1>
+      <p class="lede">对话、Agent、技能、知识库、插件与多层级记忆装进同一套实例。租户隔离一直做到数据库上下文，配额与计费由管理员统一掌握，工具执行默认落进受限容器。</p>
+      <div class="hero__actions">
+        <a class="btn btn--solid" href="#demo">看一次完整运行</a>
+        <a class="btn btn--link" href="#platform">平台由什么组成 <span aria-hidden="true">→</span></a>
+      </div>
+      <dl class="stack">
+        <div><dt>网关</dt><dd>Go</dd></div>
+        <div><dt>AI 引擎</dt><dd>Python</dd></div>
+        <div><dt>前端</dt><dd>Vue 3</dd></div>
+        <div><dt>存储</dt><dd>PostgreSQL · Redis · S3</dd></div>
+      </dl>
+    </div>
+
+    <div class="hero__panel">
+      <div class="window" data-console>
+        <div class="window__bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="window__title">chiron / console — 租户 acme · 运行回放</span>
+        </div>
+        <div class="window__body">
+          <aside class="ws" aria-label="控制台示意导航">
+            <p class="ws__label">工作区</p>
+            <ul class="ws__list">
+              <li>对话</li>
+              <li class="is-active">Agent 运行</li>
+              <li>技能</li>
+              <li>知识库</li>
+              <li>记忆</li>
+            </ul>
+            <p class="ws__label">租户治理</p>
+            <ul class="ws__list">
+              <li>成员与配额</li>
+              <li>审计与证据链</li>
+              <li>套餐与计费</li>
+            </ul>
+          </aside>
+          <div class="run">
+            <p class="run__ask"><span class="run__who">成员</span> <span data-hero-question>把这批合同归档到知识库，并列出续签风险。</span></p>
+            <ol class="steps" data-hero-steps aria-live="polite"></ol>
+            <p class="run__status"><span class="dot" aria-hidden="true"></span><span data-hero-status>—</span></p>
+          </div>
+        </div>
+      </div>
+      <p class="caption">界面示意，非产品截图。步骤与租户名均为演示数据；完整可交互演示见<a href="#demo">下方演示区</a>。</p>
+    </div>
+  </section>
+
+  <section class="section shell" id="platform">
+    <header class="section__head">
+      <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>平台组成</p>
+      <h2 class="section__title">多租户不是<em>加个字段</em>。</h2>
+      <p class="section__lede">从请求进网关到工具落地执行，租户身份一路带到底。下面每一项都是 Chiron 仓库里已经存在的模块，而不是路线图。</p>
+    </header>
+    <div class="grid grid--3">
+      <article class="card">
+        <h3>租户上下文贯穿数据层</h3>
+        <p>租户隔离不止停在接口校验，数据库访问同样带租户上下文，避免一次漏判就跨租户读到数据。</p>
+      </article>
+      <article class="card">
+        <h3>配额、限流与计费幂等</h3>
+        <p>租户级与用户级配额、按租户限流；计费写入幂等，重试不会重复扣费。邀请码与套餐支撑对外 SaaS 开通。</p>
+      </article>
+      <article class="card">
+        <h3>审计与可回放证据链</h3>
+        <p>租户级审计记录思考、工具调用与用量，形成可回放的证据链，事后能还原一次运行到底做了什么。</p>
+      </article>
+      <article class="card">
+        <h3>执行隔离是默认值</h3>
+        <p>工具执行下沉到独立的受限容器。沙箱不可用时拒绝启动，而不是悄悄降级成在主进程里跑。</p>
+      </article>
+      <article class="card">
+        <h3>过程可见，断线可续</h3>
+        <p>思考、工具调用、用量都是独立事件；连接断开后带 <code>Last-Event-ID</code> 重连，从断点继续而不是重跑。</p>
+      </article>
+      <article class="card">
+        <h3>多副本真的能扩</h3>
+        <p>会话锁、SSE 广播与回放、运行亲和路由让网关和引擎横向扩容后，同一个会话仍然落在正确的地方。</p>
+      </article>
+      <article class="card">
+        <h3>技能与 MCP 插件</h3>
+        <p>内置目录型技能资产（<code>{name}/SKILL.md</code>），配合 MCP 接入外部工具，成员按需挂到自己的 Agent 上。</p>
+      </article>
+      <article class="card">
+        <h3>知识库与多层级记忆</h3>
+        <p>知识库检索与多层级记忆在同一引擎内协同；向量直接存 PostgreSQL 的 <code>float8[]</code>，不依赖 pgvector 扩展。</p>
+      </article>
+      <article class="card">
+        <h3>身份接入</h3>
+        <p>网关统一负责认证与路由，支持 SSO 接入企业既有身份体系，管理后台与业务请求走同一套权限判定。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section shell" id="delivery">
+    <header class="section__head">
+      <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>交付形态</p>
+      <h2 class="section__title">同一套代码，<em>三种</em>落地方式。</h2>
+      <p class="section__lede">切换下面的场景，看这套平台在不同交付方式下各自负责什么。</p>
+    </header>
+    <div class="tabs" role="tablist" aria-label="交付形态">
+      <button class="tab" role="tab" id="tab-internal" aria-controls="panel-internal" aria-selected="true">对内交付</button>
+      <button class="tab" role="tab" id="tab-saas" aria-controls="panel-saas" aria-selected="false" tabindex="-1">对外 SaaS</button>
+      <button class="tab" role="tab" id="tab-private" aria-controls="panel-private" aria-selected="false" tabindex="-1">私有化部署</button>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="panel-internal" aria-labelledby="tab-internal" tabindex="0">
+      <h3>一套实例服务全公司</h3>
+      <p>成员各自建 Agent、挂知识库与技能，管理员在一处统一管配额与审计。不需要为每个部门单独部署一套，也不用担心 A 部门的会话被 B 部门检索到。</p>
+      <ul class="ticks">
+        <li>成员自助建 Agent，知识与技能按需挂载</li>
+        <li>管理员集中掌握租户与用户配额</li>
+        <li>租户级审计回答「这次运行用了什么数据」</li>
+      </ul>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="panel-saas" aria-labelledby="tab-saas" tabindex="0" hidden>
+      <h3>把 Agent 能力卖给外部客户</h3>
+      <p>租户隔离做到数据库层，计费写入幂等，邀请码与套餐负责开通，限流按租户生效。一个客户跑满配额不会把别的客户拖垮。</p>
+      <ul class="ticks">
+        <li>数据库层带租户上下文，隔离不靠业务代码自觉</li>
+        <li>计费幂等，网关重试不会重复扣费</li>
+        <li>邀请码、套餐与按租户限流</li>
+      </ul>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="panel-private" aria-labelledby="tab-private" tabindex="0" hidden>
+      <h3>数据不出内网</h3>
+      <p>整套服务部署在客户内网，存储可用自建 RustFS 替代云端 S3。工具执行在独立受限容器里进行，沙箱不可达时服务拒绝启动，而不是降级执行。</p>
+      <ul class="ticks">
+        <li>Docker Compose 编排，存储可换成自建 RustFS</li>
+        <li>工具执行下沉到独立受限容器</li>
+        <li>沙箱不可用即拒绝启动，不静默降级</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section shell" id="architecture">
+    <header class="section__head">
+      <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>架构</p>
+      <h2 class="section__title">三层职责，<em>边界清楚</em>。</h2>
+      <p class="section__lede">网关只做接入与治理，引擎只做推理与执行，前端只做交互。任何一层都可以单独扩容。</p>
+    </header>
+    <ol class="arch">
+      <li class="arch__node">
+        <span class="arch__tier">01 · 浏览器</span>
+        <h3>Vue 3 前端</h3>
+        <p>TypeScript + Vite 构建，经 Nginx 提供静态资源，通过 SSE 接收运行事件。</p>
+      </li>
+      <li class="arch__node">
+        <span class="arch__tier">02 · 网关</span>
+        <h3>Go 网关</h3>
+        <p>认证、路由、限流、计费、管理后台与 SSE 转发。租户身份在这里确立并向下传递。</p>
+      </li>
+      <li class="arch__node">
+        <span class="arch__tier">03 · 引擎</span>
+        <h3>Python AI 引擎</h3>
+        <p>对话、Agent、知识库、技能、记忆与 MCP。工具调用交给独立的沙箱服务执行。</p>
+      </li>
+    </ol>
+    <div class="infra">
+      <div><span>PostgreSQL</span><p>业务数据与向量（<code>float8[]</code>），Alembic 管理迁移</p></div>
+      <div><span>Redis</span><p>会话锁、队列与事件广播</p></div>
+      <div><span>S3 / RustFS</span><p>文件与知识库原文存储</p></div>
+      <div><span>沙箱服务</span><p>受限容器内执行工具</p></div>
+    </div>
+  </section>
+
+  <section class="section shell" id="demo">
+    <header class="section__head">
+      <p class="eyebrow"><span class="eyebrow__rule" aria-hidden="true"></span>本地演示</p>
+      <h2 class="section__title">看一次运行<em>全过程</em>。</h2>
+      <p class="section__lede">选一个问题，逐步展开思考、检索、沙箱工具调用与用量记账。以下全部是浏览器内的演示数据，不连接任何真实租户，也不消耗额度。</p>
+    </header>
+
+    <div class="demo">
+      <div class="demo__controls">
+        <label class="field" for="demo-question">
+          <span class="field__label">示例问题</span>
+          <select id="demo-question" data-demo-select></select>
+        </label>
+        <div class="demo__buttons">
+          <button class="btn btn--solid" type="button" data-demo-play>逐步展开</button>
+          <button class="btn btn--ghost" type="button" data-demo-reset>重置</button>
+        </div>
+        <p class="demo__hint" data-demo-hint>已重置，选择问题后开始。</p>
+      </div>
+
+      <div class="window window--demo">
+        <div class="window__bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="window__title" data-demo-title>chiron / console</span>
+        </div>
+        <div class="window__body window__body--demo">
+          <div class="run">
+            <p class="run__ask"><span class="run__who">成员</span> <span data-demo-question>—</span></p>
+            <ol class="steps steps--demo" data-demo-steps aria-live="polite"></ol>
+            <p class="run__status"><span class="dot" aria-hidden="true"></span><span data-demo-status>等待开始</span></p>
+          </div>
+          <aside class="evidence" aria-label="演示证据链">
+            <p class="ws__label">证据链</p>
+            <ul class="evidence__list" data-demo-evidence></ul>
+            <p class="evidence__note">演示数据，用于说明事件结构，不代表真实运行记录。</p>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shell" id="start">
+    <div class="start">
+      <div>
+        <h2 class="section__title">从源码开始。</h2>
+        <p class="section__lede">Chiron 是开源项目，部署编排、迁移脚本与内置技能都在仓库里。仓库同时提供一套刻意放弃生产属性（单副本、进程内沙箱、本地存储）的体验栈，用于快速试跑，不要拿它当生产部署。</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="https://github.com/Athenavi/chiron" target="_blank" rel="noopener">打开 GitHub 仓库 <span aria-hidden="true">→</span></a>
+          <a class="btn btn--link" href="#architecture">再看一遍架构</a>
+        </div>
+      </div>
+      <div class="code">
+        <p class="code__label">快速体验（仓库脚本）</p>
+        <pre><code>git clone https://github.com/Athenavi/chiron.git
+cd chiron
+python scripts/demo_up.py</code></pre>
+        <p class="code__note">具体依赖与端口以仓库 README 为准。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer__inner">
+    <p>Chiron · 桌面版</p>
+    <p class="footer__note">本页为项目介绍站点。界面示意、租户名称、运行步骤与用量数字均为演示内容，不是真实客户数据或性能基准。</p>
+    <a href="./gh_athenavi_chiron_desktop/index.html" target="_blank" rel="noopener">桌面版</a>
+  </div>
+</footer>
+
+<script src="./gh_athenavi_chiron/app.js"></script>
+</body>
+</html>

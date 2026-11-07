@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chiron — 跑在本机的 agent，每一步都看得见</title>
+<meta name="description" content="Chiron 是 Windows 桌面端的本地 agent 工具：身份绑定 Windows 账户，工具执行默认下沉到受限容器，沙箱不可用时拒绝启动；思考、工具调用、本地用量与子智能体运行全程可见。MIT 开源。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://github.com/JulyZ0/chiron-desktop">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chiron — 跑在本机的 agent，每一步都看得见">
+<meta property="og:description" content="Windows 本地 agent 工具。执行隔离是默认值，过程可见。MIT 开源。">
+<meta property="og:locale" content="zh_CN">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="site-head">
+  <div class="shell head-inner">
+    <a class="brand" href="#top" aria-label="Chiron 首页">
+      <span class="mark" role="img" aria-label="Chiron"></span>
+    </a>
+    <nav class="nav" aria-label="页面区块">
+      <a href="#capability">能力</a>
+      <a href="#isolation">执行隔离</a>
+      <a href="#process">过程可见</a>
+      <a href="#scenes">使用场景</a>
+      <a href="#download">下载</a>
+    </nav>
+    <div class="head-actions">
+      <span class="pill">MIT 开源</span>
+      <a class="btn btn-primary btn-sm" href="https://github.com/JulyZ0/chiron-desktop/releases">下载 Windows 版</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero shell" id="top">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>CHIRON — 本地 AGENT 工具</p>
+      <h1 class="display">跑在本机的 agent，<em>每一步</em>都看得见。</h1>
+      <p class="lede">桌面端身份绑定你的 Windows 账户。工具执行默认下沉到受限容器；沙箱不可用时<strong>拒绝启动</strong>，不偷偷回退到进程内执行。思考、工具调用、本地用量统计和子智能体运行，都摆在台面上。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/JulyZ0/chiron-desktop/releases">下载 Windows 版</a>
+        <button class="btn btn-ghost" type="button" id="hero-play">播放运行演示 <span aria-hidden="true">→</span></button>
+      </div>
+
+      <dl class="facts">
+        <div><dt>桌面平台</dt><dd>Windows x64</dd></div>
+        <div><dt>开源许可</dt><dd>MIT</dd></div>
+        <div><dt>运行时</dt><dd>Go 1.26 · Python 3.14+</dd></div>
+        <div><dt>界面</dt><dd>Vue 3</dd></div>
+      </dl>
+    </div>
+
+    <div class="hero-panel">
+      <div class="win" id="demo">
+        <div class="win-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="win-title">Chiron · 本地会话</span>
+          <span class="win-tag">界面示意</span>
+        </div>
+        <div class="win-body">
+          <aside class="win-side" aria-label="示意工作区导航">
+            <p class="side-label">工作区</p>
+            <ul class="side-list">
+              <li aria-current="true">会话</li>
+              <li>会话地图</li>
+              <li>子智能体</li>
+              <li>本地用量</li>
+            </ul>
+            <p class="side-label">执行环境</p>
+            <ul class="side-list side-list-quiet">
+              <li>Windows 账户</li>
+              <li>受限容器</li>
+              <li>本地工具集</li>
+            </ul>
+          </aside>
+
+          <div class="win-main">
+            <div class="demo-picker" role="group" aria-label="选择示例问题">
+              <button class="chip" type="button" data-scenario="archive" aria-pressed="true">归档发票</button>
+              <button class="chip" type="button" data-scenario="tests" aria-pressed="false">排查失败测试</button>
+              <button class="chip" type="button" data-scenario="nosandbox" aria-pressed="false">沙箱不可用</button>
+            </div>
+
+            <p class="ask"><span class="ask-who">你</span><span id="demo-question">把这个目录里的发票按月归档。</span></p>
+
+            <ol class="steps" id="demo-steps">
+              <li class="step is-on">
+                <span class="step-num">01</span>
+                <div>
+                  <div class="step-head"><span class="step-tag">PLAN</span><span class="step-title">拆解目标</span></div>
+                  <p class="step-detail">识别 128 个 PDF，提取开票日期，再生成月度目录。</p>
+                  <p class="step-meta">3 个子任务</p>
+                </div>
+              </li>
+              <li class="step is-on" data-tone="ok">
+                <span class="step-num">02</span>
+                <div>
+                  <div class="step-head"><span class="step-tag">SANDBOX</span><span class="step-title">申请受限容器</span></div>
+                  <p class="step-detail">沙箱可用：Inbox 只读挂载，Archive 可写，禁止出网。</p>
+                  <p class="step-meta">隔离就绪</p>
+                </div>
+              </li>
+              <li class="step is-on">
+                <span class="step-num">03</span>
+                <div>
+                  <div class="step-head"><span class="step-tag">TOOL</span><span class="step-title">批量提取文本 ×128</span></div>
+                  <p class="step-detail">提取在容器内完成，宿主进程不落盘。</p>
+                  <p class="step-meta">128 次调用 · 本地用量 42.1k tokens</p>
+                </div>
+              </li>
+              <li class="step is-on">
+                <span class="step-num">04</span>
+                <div>
+                  <div class="step-head"><span class="step-tag">OBSERVE</span><span class="step-title">校验日期解析</span></div>
+                  <p class="step-detail">6 份扫描件日期置信度偏低，转交子智能体复核。</p>
+                  <p class="step-meta">子智能体 1 · 运行中</p>
+                </div>
+              </li>
+              <li class="step is-on">
+                <span class="step-num">05</span>
+                <div>
+                  <div class="step-head"><span class="step-tag">DONE</span><span class="step-title">写入月度目录</span></div>
+                  <p class="step-detail">按 2026-01 至 2026-06 归档，复核未通过的单独列出。</p>
+                  <p class="step-meta">用时 2m14s</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="run-bar">
+              <p class="run-status" id="demo-status" role="status">演示数据 · 5 步 · 归档完成，6 份待人工确认</p>
+              <button class="btn btn-quiet btn-sm" type="button" id="demo-replay">重放</button>
+            </div>
+            <p class="demo-note">以上为界面示意与演示数据，用于说明执行流程，不是真实运行记录。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band shell" id="capability">
+    <header class="band-head">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>产品能力</p>
+      <h2 class="display-sm">四件事，构成一个敢放在本机的 agent。</h2>
+    </header>
+    <div class="cards">
+      <article class="card">
+        <p class="card-idx">01</p>
+        <h3>身份绑定 Windows 账户</h3>
+        <p>桌面端不做另一套账号体系。会话身份跟随你登录的 Windows 账户，权限边界与本机一致。</p>
+      </article>
+      <article class="card">
+        <p class="card-idx">02</p>
+        <h3>执行隔离是默认值</h3>
+        <p>工具执行下沉到受限容器，而不是直接在你的宿主进程里跑。隔离不是可选开关，是启动前提。</p>
+      </article>
+      <article class="card">
+        <p class="card-idx">03</p>
+        <h3>过程可见</h3>
+        <p>思考、每一次工具调用、本地用量统计、子智能体的运行状态，都能在会话里逐条回看。</p>
+      </article>
+      <article class="card">
+        <p class="card-idx">04</p>
+        <h3>会话地图与子智能体</h3>
+        <p>长任务拆给子智能体后，仍能在会话地图上看清分支与归属，而不是收进一个黑箱。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band shell split" id="isolation">
+    <div class="split-copy">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>执行隔离</p>
+      <h2 class="display-sm">沙箱不可用，就<em>不启动</em>。</h2>
+      <p class="lede">很多工具在隔离环境准备失败时会静默降级，直接在你的进程内执行命令。Chiron 把这条退路封掉了：检查不通过就终止，并说明原因。你要么在受限容器里跑，要么不跑。</p>
+      <a class="link-arrow" href="https://github.com/JulyZ0/chiron-desktop/blob/main/docs/windows-isolation-selection.md">阅读 Windows 隔离方案选型 <span aria-hidden="true">→</span></a>
+    </div>
+    <ol class="flow">
+      <li class="flow-step">
+        <span class="flow-key">请求</span>
+        <span class="flow-text">会话准备调用本地工具</span>
+      </li>
+      <li class="flow-step">
+        <span class="flow-key">检查</span>
+        <span class="flow-text">受限容器是否就绪</span>
+      </li>
+      <li class="flow-step flow-yes">
+        <span class="flow-key">就绪</span>
+        <span class="flow-text">在容器内执行，过程逐条记录</span>
+      </li>
+      <li class="flow-step flow-no">
+        <span class="flow-key">未就绪</span>
+        <span class="flow-text">拒绝启动，不回退到进程内执行</span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="band shell" id="process">
+    <header class="band-head">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>过程可见</p>
+      <h2 class="display-sm">不是给你一个结果，是给你一条能查的过程。</h2>
+    </header>
+    <div class="rows">
+      <div class="row">
+        <h3>思考</h3>
+        <p>模型每一步的判断依据展开可读，判断错了能定位到具体那一步。</p>
+      </div>
+      <div class="row">
+        <h3>工具调用</h3>
+        <p>调用了什么、参数是什么、返回了什么，按顺序留在会话里。</p>
+      </div>
+      <div class="row">
+        <h3>本地用量统计</h3>
+        <p>用量在本机统计，不需要先去某个控制台对账。</p>
+      </div>
+      <div class="row">
+        <h3>子智能体运行</h3>
+        <p>派生出去的子任务同样可见，能看到它在做什么、进行到哪。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band shell" id="scenes">
+    <header class="band-head">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>使用场景</p>
+      <h2 class="display-sm">适合那些「不想上传，也不想盲跑」的活。</h2>
+      <p class="band-sub">以下为场景示例，用于说明适用范围，不代表实测结果或客户案例。</p>
+    </header>
+    <div class="cards cards-3">
+      <article class="card">
+        <h3>本机文件批处理</h3>
+        <p>发票、扫描件、日志目录的整理与归档。文件留在本机，执行在受限容器内完成。</p>
+      </article>
+      <article class="card">
+        <h3>仓库排查</h3>
+        <p>跑测试、读堆栈、归并根因。命令在隔离环境里执行，宿主仓库不被顺手改写。</p>
+      </article>
+      <article class="card">
+        <h3>需要交代的长任务</h3>
+        <p>拆成子智能体后仍要能复盘的过程：每一步的输入输出都留痕，便于事后核对。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band shell notes" id="notes">
+    <header class="band-head">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>演示说明</p>
+      <h2 class="display-sm">首屏那块界面在演示什么。</h2>
+    </header>
+    <div class="notes-grid">
+      <p>切换示例问题会替换对应的执行步骤：<strong>归档发票</strong>展示计划、容器申请、批量工具调用与子智能体复核；<strong>排查失败测试</strong>展示容器内执行与根因归并；<strong>沙箱不可用</strong>展示拒绝启动这条分支。点「重放」可以按顺序再看一遍。</p>
+      <p>面板中的问题、步骤、耗时与用量均为演示数据，不来自真实会话，也不构成性能承诺。侧栏结构参照产品实际的信息组织方式绘制。真实行为请以 <a href="https://github.com/JulyZ0/chiron-desktop/releases">下载的运行版本</a> 和 <a href="https://github.com/JulyZ0/chiron-desktop/blob/main/docs/CONTRIBUTING.md">开发文档</a> 为准。</p>
+    </div>
+  </section>
+
+  <section class="band shell download" id="download">
+    <div class="dl-main">
+      <p class="eyebrow"><span class="rule" aria-hidden="true"></span>下载与开发</p>
+      <h2 class="display-sm">装到自己的 Windows 上。</h2>
+      <p class="lede">最新公开版本 <strong>V0.261106.02</strong>，2026-11-06 发布，Windows x64 安装包约 198&nbsp;MB。版本信息截至 2026-11-07，后续以 Releases 页面为准。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/JulyZ0/chiron-desktop/releases/tag/V0.261106.02">下载 V0.261106.02</a>
+        <a class="btn btn-ghost" href="https://github.com/JulyZ0/chiron-desktop/releases">查看全部版本</a>
+      </div>
+    </div>
+    <ul class="dl-links">
+      <li>
+        <a href="https://github.com/JulyZ0/chiron-desktop">源码仓库 <span aria-hidden="true">→</span></a>
+        <span>Go 1.26 · Python 3.14+ · Vue 3，MIT 许可</span>
+      </li>
+      <li>
+        <a href="https://github.com/JulyZ0/chiron-desktop/blob/main/docs/CONTRIBUTING.md">开发文档 <span aria-hidden="true">→</span></a>
+        <span>本地构建、调试与参与方式</span>
+      </li>
+      <li>
+        <a href="https://github.com/Athenavi/chiron">企业化部署 <span aria-hidden="true">→</span></a>
+        <span>Chiron AI Agent，面向组织环境的版本</span>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="shell foot-inner">
+    <div class="foot-brand">
+      <span class="mark mark-sm" role="img" aria-label="Chiron"></span>
+      <p>本地 agent 工具 · Windows · MIT</p>
+    </div>
+    <div class="foot-credits">
+      <p class="side-label">致谢</p>
+      <p>设计思想或开源代码参考：
+        <a href="https://www.bilibili.com/opus/1265361021143351318">deepseek-harness:super-agents</a> ·
+        <a href="https://github.com/KKKKhazix/agent-autoloop">Loop 思想</a> ·
+        <a href="https://github.com/esengine/DeepSeek-Reasonix">核心循环 / UI-UX</a> ·
+        <a href="https://github.com/liangmianya/dsh-synapse">会话地图</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script src="./app.js" defer></script>
+</body>
+</html>
